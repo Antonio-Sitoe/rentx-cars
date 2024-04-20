@@ -1,5 +1,5 @@
-import { Category } from '../model/Category'
-import { ICategoryRepository, ICreateCategoryDTO } from './ICategoryRepository'
+import { Category } from '../../model/Category'
+import { ICategoryRepository, ICreateCategoryDTO } from '../ICategoryRepository'
 
 export class CategoriesRepositories implements ICategoryRepository {
   private categories: Category[] = []
@@ -7,7 +7,14 @@ export class CategoriesRepositories implements ICategoryRepository {
     this.categories = []
   }
 
-  private static INSTANCE: ICategoryRepository
+  private static INSTANCE: CategoriesRepositories
+
+  public static getInstance() {
+    if (!CategoriesRepositories.INSTANCE) {
+      CategoriesRepositories.INSTANCE = new CategoriesRepositories()
+    }
+    return CategoriesRepositories.INSTANCE
+  }
   findByname(name: string): Category {
     throw new Error('Method not implemented.')
   }
