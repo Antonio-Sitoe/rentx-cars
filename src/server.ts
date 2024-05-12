@@ -4,14 +4,20 @@ import SwaggerJson from './swagger.json'
 
 import { categoriesRoutes } from './routes/category-routes'
 import { specification } from './routes/specification-routes'
+import { AppDataSource } from './data-source'
 
-const app = express()
-app.use(express.json())
+AppDataSource.initialize().then(() => {
+  const app = express()
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(SwaggerJson))
+  app.use(express.json())
 
-// Routes
-app.use('/categories', categoriesRoutes)
-app.use('/specification', specification)
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(SwaggerJson))
 
-app.listen(3333, () => console.log('Server running'))
+  // Routes
+  app.use('/categories', categoriesRoutes)
+  app.use('/specification', specification)
+
+  return app.listen(3333, () => {
+    console.log('SERVER IS RUNNING: ', 3333)
+  })
+})
